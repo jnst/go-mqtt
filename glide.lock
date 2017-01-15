@@ -1,0 +1,14 @@
+hash: 61cce5aefd0297bbb9b12b14b7c5e4aabfcea0c2c5d5f0fdb366c58c9e8b0728
+updated: 2017-01-15T21:28:18.322637129+09:00
+imports:
+- name: github.com/eclipse/paho.mqtt.golang
+  version: 45f9b18f4864c81d49c3ed01e5faec9eeb05de31
+  subpackages:
+  - packets
+- name: github.com/sirupsen/logrus
+  version: d26492970760ca5d33129d2d799e34be5c4782eb
+- name: golang.org/x/net
+  version: f2499483f923065a842d38eb4c7f1927e6fc6e6d
+  subpackages:
+  - websocket
+testImports: []

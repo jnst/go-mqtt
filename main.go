@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"log"
+	stdLog "log"
 	"os"
 	"time"
 
 	"github.com/eclipse/paho.mqtt.golang"
+	log "github.com/sirupsen/logrus"
 )
 
 var f mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
@@ -15,8 +16,11 @@ var f mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
 }
 
 func main() {
-	mqtt.DEBUG = log.New(os.Stdout, "", 0)
-	mqtt.ERROR = log.New(os.Stdout, "", 0)
+	mqtt.DEBUG = stdLog.New(os.Stdout, "", stdLog.LstdFlags|stdLog.LUTC)
+	mqtt.WARN = stdLog.New(os.Stdout, "", stdLog.LstdFlags|stdLog.LUTC)
+	mqtt.ERROR = stdLog.New(os.Stdout, "", stdLog.LstdFlags|stdLog.LUTC)
+	mqtt.CRITICAL = stdLog.New(os.Stdout, "", stdLog.LstdFlags|stdLog.LUTC)
+
 	opts := mqtt.NewClientOptions().AddBroker("tcp://localhost:1883").SetClientID("gotrivial")
 	opts.SetKeepAlive(2 * time.Second)
 	opts.SetDefaultPublishHandler(f)
@@ -40,7 +44,7 @@ func main() {
 	time.Sleep(6 * time.Second)
 
 	if token := c.Unsubscribe(topicName); token.Wait() && token.Error() != nil {
-		fmt.Println(token.Error())
+		log.Error(token.Error())
 		os.Exit(1)
 	}
 
