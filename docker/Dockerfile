@@ -15,11 +15,13 @@ RUN apt-get update && apt-get install -y \
 
 RUN locale-gen ja_JP
 
-RUN cd /mnt && curl -L -o emqttd.zip http://emqtt.io/downloads/latest/ubuntu && unzip emqttd.zip && rm emqttd.zip
-RUN /mnt/emqttd/bin/emqttd start
+RUN cd /mnt && curl -L -o emqttd.zip http://emqtt.io/downloads/latest/ubuntu16_04 && unzip emqttd.zip && rm emqttd.zip
 
-RUN wget http://peak.telecommunity.com/dist/ez_setup.py;python ez_setup.py;easy_install distribute;
+RUN wget https://bootstrap.pypa.io/ez_setup.py -O - | python;
 RUN wget https://bootstrap.pypa.io/get-pip.py;python get-pip.py;
 RUN pip install supervisor
 
 ADD config/supervisord.conf /etc/supervisord.conf
+
+EXPOSE 22 1883 18083
+CMD ["/usr/local/bin/supervisord"]
